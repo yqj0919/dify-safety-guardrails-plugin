@@ -1,0 +1,60 @@
+identity:
+  author: "yuanquanjiang"
+  name: "safety_guardrails"
+  label:
+    en_US: "Safety Guardrails"
+    zh_Hans: "安全护栏"
+    pt_BR: "Safety Guardrails"
+    ja_JP: "セーフティガードレール"
+  description:
+    en_US: "AI safety guardrails system that provides pre-filtering and post-filtering to defend against malicious attacks and ensure generated content is safe and compliant."
+    zh_Hans: "大模型安全护栏是一套无需修改模型本身、通过前置审核与后置过滤来防御恶意攻击并确保生成内容安全合规的外部防护系统。"
+    pt_BR: "Sistema de proteção de segurança de IA que fornece pré-filtragem e pós-filtragem para defender contra ataques maliciosos."
+    ja_JP: "悪意のある攻撃を防御し、生成されたコンテンツが安全で準拠していることを保証するAI安全ガードレールシステム。"
+  icon: "favicon.png"
+
+# Provider credentials configuration
+credentials_schema:
+  - name: "api_username"
+    type: "secret-input"
+    required: true
+    label:
+      zh_Hans: "API用户名"
+      en_US: "API Username"
+      pt_BR: "Nome de usuário da API"
+      ja_JP: "APIユーザー名"
+    placeholder:
+      zh_Hans: "请输入安全API的用户名"
+      en_US: "Please enter your Safety API username"
+      pt_BR: "Digite seu nome de usuário da API de segurança"
+      ja_JP: "セーフティAPIのユーザー名を入力してください"
+    help:
+      zh_Hans: "用于访问安全护栏API的用户名"
+      en_US: "Username for accessing the Safety Guardrails API"
+      pt_BR: "Nome de usuário para acessar a API de proteção de segurança"
+      ja_JP: "セーフティガードレールAPIにアクセスするためのユーザー名"
+      
+  - name: "api_password"
+    type: "secret-input"
+    required: true
+    label:
+      zh_Hans: "API密码"
+      en_US: "API Password"
+      pt_BR: "Senha da API"
+      ja_JP: "APIパスワード"
+    placeholder:
+      zh_Hans: "请输入安全API的密码"
+      en_US: "Please enter your Safety API password"
+      pt_BR: "Digite sua senha da API de segurança"
+      ja_JP: "セーフティAPIのパスワードを入力してください"
+    help:
+      zh_Hans: "用于访问安全护栏API的密码"
+      en_US: "Password for accessing the Safety Guardrails API"
+      pt_BR: "Senha para acessar a API de proteção de segurança"
+      ja_JP: "セーフティガードレールAPIにアクセスするためのパスワード"
+
+tools:
+  - tools/safety_guardrails.yaml
+extra:
+  python:
+    source: provider/safety_guardrails.py
