@@ -17,10 +17,11 @@ def test_safety_guardrails_tool():
     print("=" * 60)
     
     # 创建模拟的runtime和session对象
+    import os
     mock_runtime = Mock()
     mock_runtime.credentials = {
-        "api_username": "your_username_here",
-        "api_password": "your_password_here"
+        "api_username": os.getenv("SAFETY_API_USERNAME") or "your_username_here",
+        "api_password": os.getenv("SAFETY_API_PASSWORD") or "your_password_here"
     }
     
     mock_session = Mock()

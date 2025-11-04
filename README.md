@@ -1,27 +1,62 @@
-# Safety Guardrails Plugin / 安全护栏插件
-
-[English](#english) | [中文](#中文)
-
----
+# Safety Guardrails Plugin
 
 ## English
 
 ### Overview
 
-The Safety Guardrails plugin is an AI content auditing and security filtering system designed to protect against malicious attacks and ensure generated content is safe and compliant. This external protection system provides pre-filtering and post-filtering capabilities without requiring modifications to the underlying AI models.
+The Safety Guardrails plugin is an AI content auditing and security filtering system designed to defend against malicious attacks and ensure generated content is safe and compliant. This external protection system provides pre-audit and post-filtering capabilities without modifying the underlying AI models.
 
 ### Features
 
-- **Prompt Injection Detection**: Identifies and blocks potential prompt injection attacks and malicious instructions
-- **Content Value Review**: Evaluates text against content policies and community guidelines
-- **Sensitive Data Checking**: Scans content for personally identifiable information and sensitive data
-- **Risk Assessment**: Provides detailed risk level assessments with explanations and recommendations
-- **Real-time Auditing**: Processes content in real-time with immediate feedback
+- **Prompt Injection Detection**: Identifies and blocks potential prompt injection attacks across seven categories:
+  - Prompt leakage attacks
+  - Sensitive data extraction attacks
+  - Jailbreak attacks
+  - Inverse persuasion attacks
+  - Resource consumption instruction attacks
+  - Obfuscated input attacks
+  - Hallucination induction attacks
+- **Content Values Review**: Evaluates text based on the “Basic Security Requirements for Generative AI Services”, covering five dimensions (31 subcategories):
+  - Violations of core socialist values
+  - Discriminatory content
+  - Commercial violations of laws and regulations
+  - Infringement of others’ lawful rights
+  - Failure to meet security requirements of specific service types
+- **Sensitive Data Checking**: Evaluates text based on the “Security Requirements for Processing Sensitive Personal Information”, covering eight categories:
+  - Biometric information leakage
+  - Religious belief information leakage
+  - Specific identity information leakage
+  - Medical and health information leakage
+  - Financial account information leakage
+  - Location and trajectory information leakage
+  - Personal information of minors under fourteen
+  - Other sensitive personal information
+- **Interception Reasons**: Provides detailed blocking reasons, including violation categories, risk levels, and recommendations
+- **Real-time Auditing**: Processes content in real time and provides immediate feedback
 - **Multi-language Support**: Supports content auditing in multiple languages
+- **Flexible Integration**: Integrates with the Dify framework; supports agent, workflow, and other approaches
+
+### Requesting API Key / Access Credentials
+
+For new users who need access to the Safety Guardrails API:
+- Send an application email to `yuanquanjiang@keanbang.com`, including your organization name, project description, and intended use cases.
+- You will receive a response within 24 hours containing your API access credentials.
+- If your deployment uses API keys instead of account credentials, request an API key from your administrator and keep it secure.
+- Store credentials securely in the Dify plugin configuration or environment variables. Refer to `.env.example` for:
+  - `SAFETY_API_USERNAME`
+  - `SAFETY_API_PASSWORD`
+- Ensure the `.env` file is not committed to version control (`.gitignore` ignores it by default).
 
 ### Installation
 
-1. Install the plugin in your Dify environment
+1. Install the plugin in your Dify environment:
+   - Search for “safety_guardrails” in the Dify Plugin Marketplace
+   - Click the Install button to add the plugin to your environment
+   
+   ![alt text](image.png)
+   ![alt text](image-1.png)
+   ![alt text](image-2.png)
+
 2. Configure your API credentials (username and password)
 3. Add the Safety Guardrails tool to your workflow
 
@@ -37,20 +72,35 @@ These credentials are securely stored in your Dify environment and used for OAut
 ### Usage
 
 1. Add the Safety Guardrails tool to your Dify workflow
-2. Configure the tool with your API credentials
-3. Input the text content you want to audit in the `query` parameter
-4. The tool will return a structured audit result including:
-   - Risk level assessment
-   - Violation details (if any)
-   - Safety recommendations
-   - Compliance status
 
-### API Endpoints
+   ![alt text](image-3.png)
 
-- **Token Endpoint**: `https://safeai.shuanzhineng.com:8081/api/account/oauth2/token`
-- **Audit Endpoint**: `https://safeai.shuanzhineng.com:8081/api/chat/audit`
+2. Enter your API username and API password.
+3. Provide the text to audit in the `query` parameter.
 
-### Requirements
+   ![alt text](image-5.png)
+
+4. The tool returns the audit results.
+
+   ![alt text](image-6.png)
+
+5. Overall workflow framework
+
+   ![alt text](image-4.png)
+
+### Correct Usage Guide
+
+To ensure safety and compliance, we recommend the following usage patterns:
+
+- Pre-audit: Before sending user prompts to the model, call this tool to detect prompt injection and sensitive data.
+- Post-audit: After generation, call this tool to identify potential violations and enforce safety policies.
+- Handle results: Branch logic based on the returned `result` and violation flags. For high-risk content, block, redact, or guide users to revise.
+- Authentication: The tool exchanges your account credentials for a short-lived OAuth2 token; token refresh is handled automatically during requests.
+- Error handling: On network errors or unauthorized responses, verify credentials and retry; record the `status_code` and error details for troubleshooting.
+
+Example (Dify workflow): Add the Safety Guardrails tool node, map `query` from user input, then branch on the audit result to decide whether to proceed or block and notify the user.
+
+### System Requirements
 
 - Python 3.12+
 - Dify Plugin SDK 0.4.0+
@@ -62,7 +112,7 @@ These credentials are securely stored in your Dify environment and used for OAut
 - Secure HTTPS/TLS communication
 - OAuth2 token-based authentication
 - Temporary processing only
-- No data sharing with third parties
+- No sharing of data with third parties
 
 ### Author
 
@@ -75,80 +125,3 @@ These credentials are securely stored in your Dify environment and used for OAut
 ### License
 
 Please refer to the project license file for licensing information.
-
----
-
-## 中文
-
-### 概述
-
-安全护栏插件是一个AI内容审核和安全过滤系统，旨在防御恶意攻击并确保生成内容的安全合规。这个外部防护系统提供前置审核与后置过滤功能，无需修改底层AI模型。
-
-### 功能特性
-
-- **提示词注入检测**: 识别并阻止潜在的提示词注入攻击和恶意指令
-- **内容价值观审核**: 根据内容政策和社区准则评估文本内容
-- **敏感数据检查**: 扫描内容中的个人身份信息和敏感数据
-- **风险评估**: 提供详细的风险等级评估，包含解释和建议
-- **实时审核**: 实时处理内容并提供即时反馈
-- **多语言支持**: 支持多种语言的内容审核
-
-### 安装
-
-1. 在您的Dify环境中安装插件
-2. 配置您的API凭据（用户名和密码）
-3. 将安全护栏工具添加到您的工作流中
-
-### 配置
-
-插件需要以下凭据：
-
-- **API用户名**: 您的安全护栏API用户名
-- **API密码**: 您的安全护栏API密码
-
-这些凭据安全存储在您的Dify环境中，用于OAuth2身份验证。
-
-### 使用方法
-
-1. 将安全护栏工具添加到您的Dify工作流中
-2. 使用您的API凭据配置工具
-3. 在`query`参数中输入要审核的文本内容
-4. 工具将返回结构化的审核结果，包括：
-   - 风险等级评估
-   - 违规详情（如有）
-   - 安全建议
-   - 合规状态
-
-### API端点
-
-- **令牌端点**: `https://safeai.shuanzhineng.com:8081/api/account/oauth2/token`
-- **审核端点**: `https://safeai.shuanzhineng.com:8081/api/chat/audit`
-
-### 系统要求
-
-- Python 3.12+
-- Dify插件SDK 0.4.0+
-- 用于API通信的网络连接
-
-### 隐私与安全
-
-- 不本地存储用户内容
-- 安全的HTTPS/TLS通信
-- 基于OAuth2令牌的身份验证
-- 仅临时处理数据
-- 不与第三方共享数据
-
-### 作者
-
-**yuanquanjiang**
-
-### 版本
-
-0.0.1
-
-### 许可证
-
-请参考项目许可证文件了解许可信息。
-
-
-

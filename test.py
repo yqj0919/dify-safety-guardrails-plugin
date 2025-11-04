@@ -13,10 +13,11 @@ def test_token_endpoint():
     
     token_url = "https://safeai.shuanzhineng.com:8081/api/account/oauth2/token"
     
-    # 测试凭据 - 请替换为实际的API凭据
+    # 测试凭据（从环境变量读取或使用占位符，避免泄露）
+    import os
     credentials = {
-        "username": "your_username_here",
-        "password": "your_password_here"
+        "username": os.getenv("SAFETY_API_USERNAME") or "your_username_here",
+        "password": os.getenv("SAFETY_API_PASSWORD") or "your_password_here"
     }
     
     print(f"📡 请求URL: {token_url}")
